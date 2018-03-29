@@ -1,13 +1,10 @@
 import numpy as np 
-import re
+import re, pprint, scipy, scipy.linalg
 from numpy import linalg as LA
 from numpy.linalg import inv
-from scipy.linalg import hilbert
+from scipy.linalg import hilbert, lu
 from fractions import Fraction
-import pprint
-import scipy
-import scipy.linalg   # SciPy Linear Algebra Library
-from scipy.linalg import lu
+
 
 # get the shape of the data e.g. [10][5]
 def getShape(data_str):
@@ -28,6 +25,31 @@ def pushToMatrix(data_str,i,j):
     
     m = np.asmatrix(ans).astype(np.float64)
     return m
+
+
+# convert matrix to comma-semi-colon-format
+# print message to terminal & write output to file
+def exportTomFormat(m):
+    s = ""
+    i,j = m.shape
+    print "Matrix shape: [" + str(i) +" "+ str(j) +"]\n"
+    for row in range(0,i):
+        for col in range(0,j):
+            s += str(m[row,col])
+            if col == j-1:
+                s
+            else:
+                s += ","
+
+        s += ";"
+
+    # write output to a file (will create file if not existing)
+    # NOTE: does NOT append to file - will overwrite contents
+    f = open('output_file.txt', 'w')
+    f.write(s)  # python will convert \n to os.linesep
+    f.close()
+
+    print "- Written to 'output.txt' -\n\n**************************************\n"
 
 
 # sum contents of matrix
@@ -74,6 +96,7 @@ def condNumber(m):
     return matrix_total * inverse_matrix_total
 
 
+# convert matrix elements to fractions
 def convertToFractionMatrix(decimal_matrix):
     two_d_fract_array = []
     x,y = decimal_matrix.shape
@@ -135,6 +158,7 @@ def createHilbertFractionMatrix(sq_size):
 #         x[m] /= u[m, m]
 #     return x
 
+# get permutation from LU
 def getPermutation(P):
     perm = []
     for i in P:
@@ -144,7 +168,7 @@ def getPermutation(P):
 
     return perm
 
-# three column vectors from tridiagonal
+# three column vectors from tridiagonal matrix
 def getTridiagonal(m):
     print m
     x,y = m.shape
@@ -163,6 +187,9 @@ def getTridiagonal(m):
         i+=1
 
     return np.asmatrix(vector_one).T, np.asmatrix(vector_two).T, np.asmatrix(vector_three).T
+
+
+
 
 
 if __name__ == '__main__':
@@ -241,3 +268,7 @@ if __name__ == '__main__':
     print b.shape
     print c.shape
     print np.cross(b.T,c.T)
+    print 
+    print "**************************************\n"
+    
+    exportTomFormat(A)
