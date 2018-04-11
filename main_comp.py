@@ -3,8 +3,9 @@ import re, pprint, scipy, scipy.linalg
 from numpy import linalg as LA
 from numpy.linalg import inv
 from scipy.linalg import hilbert, lu
+from scipy.interpolate import lagrange
 from fractions import Fraction
-
+# from sympy import symbols, Rational
 
 # get the shape of the data e.g. [10][5]
 def getShape(data_str):
@@ -205,70 +206,102 @@ if __name__ == '__main__':
     print "The data provided as a matrix: \n"+str(read_matrix)+"\n"
     print "**************************************\n"
 
-    sum_matrix = addMatrixElement(read_matrix)
-    print "Elements added together: ["+str(sum_matrix)+"]\n"
-    print "**************************************\n"
+    # sum_matrix = addMatrixElement(read_matrix)
+    # print "Elements added together: ["+str(sum_matrix)+"]\n"
+    # print "**************************************\n"
 
-    norm_matrix = vectorNorm(read_matrix)
-    print "Vector Norm: ["+str(norm_matrix)+"]\n"
-    print "**************************************\n"
+    # norm_matrix = vectorNorm(read_matrix)
+    # print "Vector Norm: ["+str(norm_matrix)+"]\n"
+    # print "**************************************\n"
 
-    cond_norm_matrix = condNumberNumpy(read_matrix)
-    print "Condition number: ["+str(cond_norm_matrix)+"]\n"
-    print "**************************************\n"
+    # cond_norm_matrix = condNumberNumpy(read_matrix)
+    # print "Condition number: ["+str(cond_norm_matrix)+"]\n"
+    # print "**************************************\n"
 
     # print "Condition number extra input test: [[.01, 98796],[.0001, 7896]]\n"
     # print "Cond = " + str(condNumber(np.asmatrix([[.01, 98796],[.0001, 7896]]))) + "\n"
     # print "**************************************\n"
 
-    own_cond_norm_matrix = condNumber(read_matrix)
-    print "Own condition number: ["+str(own_cond_norm_matrix)+"]\n"
-    print "**************************************\n"
+    # own_cond_norm_matrix = condNumber(read_matrix)
+    # print "Own condition number: ["+str(own_cond_norm_matrix)+"]\n"
+    # print "**************************************\n"
 
-    hillbert_matrix = createHilbertFractionMatrix(3)
-    print "Hilbert Matrix fractions: \n" + str(hillbert_matrix) + "\n"
-    print "**************************************\n"
+    # hillbert_matrix = createHilbertFractionMatrix(3)
+    # print "Hilbert Matrix fractions: \n" + str(hillbert_matrix) + "\n"
+    # print "**************************************\n"
 
-    sum_hilbert = addMatrixElement(hillbert_matrix)
-    print "Sum of Hilbert Matrix fractions: [" + str(sum_hilbert) + "]\n"
-    print "**************************************\n"
+    # sum_hilbert = addMatrixElement(hillbert_matrix)
+    # print "Sum of Hilbert Matrix fractions: [" + str(sum_hilbert) + "]\n"
+    # print "**************************************\n"
 
-    print "Multiply Hilbert by inverse\n"
-    print np.round(np.dot(hilbert(4),inv(hilbert(4))))
-    print
-    print "**************************************\n"
+    # print "Multiply Hilbert by inverse\n"
+    # print np.round(np.dot(hilbert(4),inv(hilbert(4))))
+    # print
+    # print "**************************************\n"
 
-    print "LU Decomposition: \n"
-    A = np.asarray([[11,  9, 24],[ 1,  5,  2],[ 3, 17, 18],[ 3, 17, 18]])
-    B = np.asarray([[11,  9],[ 1,  5],[ 3, 17]])
-    
-    # P = permutation matrix
-    P, L, U = scipy.linalg.lu(A, permute_l=False, overwrite_a=False, check_finite=True)
+    # print "LU Decomposition: \n"
+    # LU_array = np.asarray([[1,2,3],[4,5,6],[7,8,9]])
+    # b = [[6,15,24]]
+    # # P = permutation matrix
+    # P, L, U = scipy.linalg.lu(LU_array, permute_l=False, overwrite_a=False, check_finite=True)
 
-    print "Permutation Matrix: \n" + str(P) +"\n"
-    print "Permutation : " + str(getPermutation(P)) + "\n"
+    # print "Permutation Matrix: \n" + str(P) +"\n"
+    # print "Permutation : " + str(getPermutation(P)) + "\n"
 
-    # L = lower triangle
-    print "Lower triangle: \n" + str(L) +"\n"
+    # # L = lower triangle
+    # print "Lower triangle: \n" + str(L) +"\n"
 
-    # U = upper triangle
-    print "Upper triangle: \n" + str(U) +"\n"
-    print "**************************************\n"
+    # # U = upper triangle
+    # print "Upper triangle: \n" + str(U) +"\n"
 
-    a,b,c = getTridiagonal(A)
-    print
-    print "Tridiagonal of Matrix - three column vectors: \n\n" + str(a) + "\n\n" + str(b) + "\n\n" + str(c) +"\n"
-    print "**************************************\n"
+    # bb = P*b
+    # print bb
+    # y = np.linalg.lstsq(L,bb)
+    # print y
+    # print "**************************************\n"
 
-    print B.shape
-    print c.shape
-    # print np.dot(B,c)
+    # top_diagonal, main_diagonal, bottom_diagonal = getTridiagonal(LU_array)
+    # print
+    # print "Tridiagonal of Matrix - three column vectors: \n\n" + str(top_diagonal) + "\n\n" + str(main_diagonal) + "\n\n" + str(bottom_diagonal) +"\n"
+    # print "**************************************\n"
 
-    print
-    print b.shape
-    print c.shape
-    print np.cross(b.T,c.T)
-    print 
-    print "**************************************\n"
-    
-    exportTomFormat(A)
+    # print main_diagonal.shape
+    # print bottom_diagonal.shape
+    # # print np.dot(B,c)
+
+    # print
+    # print main_diagonal.shape
+    # print bottom_diagonal.shape
+    # print np.cross(main_diagonal.T, bottom_diagonal.T)
+    # print 
+    # print "**************************************\n"
+
+    # exportTomFormat(LU_array)
+
+    # print "**************************************\n"
+    # print "Cholesky: \n"
+
+    # chol_matrix = [[4, 2, 1, 1],[2, 5, 0, 3],[1, 0, 7, 2],[1, 3, 2, 8]]
+    # print np.matrix(chol_matrix)
+    # print
+    # # b = [[8,10,10,14]]
+    # # print b
+    # # print
+    # c = np.linalg.cholesky(chol_matrix)
+    # print c
+
+    print "\n**************************************\n"
+    # print condNumberNumpy(hilbert(10))
+    # print LA.norm(hilbert(10), np.inf)
+    print "\n**************************************\n"
+    print "LaGrange Polynomial Interpolation: \n"
+    x = np.array(read_matrix)
+    print x
+    y = np.array(read_matrix)
+    poly = lagrange(x, y)
+    print poly
+    print "\n**************************************\n"
+
+
+
+
