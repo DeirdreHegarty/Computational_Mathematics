@@ -5,7 +5,7 @@ from numpy.linalg import inv
 from scipy.linalg import hilbert, lu
 from scipy.interpolate import lagrange
 from fractions import Fraction
-# from sympy import symbols, Rational
+
 
 # get the shape of the data e.g. [10][5]
 def getShape(data_str):
@@ -53,11 +53,23 @@ def exportTomFormat(m):
     print "- Written to 'output.txt' -\n\n**************************************\n"
 
 
-# sum contents of matrix
-def addMatrixElement(m):
-    mat = m.flatten().sum()
-    return mat
+# # sum contents of matrix
+# def addMatrixElement(m):
+#     mat = m.flatten().sum()
+#     return mat
 
+# sum each row
+def sumOfRow(m):
+    m = np.asmatrix(m)
+    i,j = m.shape
+    arr = []
+
+    for row in m:
+        r = 0
+        r = np.sum(row)
+        arr.append(r)
+
+    return arr
 
 # get euclidean norm of matrix
 def vectorNorm(m):
@@ -189,22 +201,26 @@ def getTridiagonal(m):
 
     return np.asmatrix(vector_one).T, np.asmatrix(vector_two).T, np.asmatrix(vector_three).T
 
-
+def countNumLen(n):
+    count=0
+    while(n>0):
+        count=count+1
+        n=n//10
 
 
 
 if __name__ == '__main__':
     f = open('read.txt', 'r').read().strip()    # save file to string
 
-    print "**************************************\n"
+    # print "**************************************\n"
 
-    x,y = getShape(f)
-    print "Data shape: ["+ str(x) +"]["+ str(y) +"]\n"
-    print "**************************************\n"
+    # x,y = getShape(f)
+    # print "Data shape: ["+ str(x) +"]["+ str(y) +"]\n"
+    # print "**************************************\n"
 
-    read_matrix = pushToMatrix(f,x,y)
-    print "The data provided as a matrix: \n"+str(read_matrix)+"\n"
-    print "**************************************\n"
+    # read_matrix = pushToMatrix(f,x,y)
+    # print "The data provided as a matrix: \n"+str(read_matrix)+"\n"
+    # print "**************************************\n"
 
     # sum_matrix = addMatrixElement(read_matrix)
     # print "Elements added together: ["+str(sum_matrix)+"]\n"
@@ -242,6 +258,7 @@ if __name__ == '__main__':
     # print "LU Decomposition: \n"
     # LU_array = np.asarray([[1,2,3],[4,5,6],[7,8,9]])
     # b = [[6,15,24]]
+
     # # P = permutation matrix
     # P, L, U = scipy.linalg.lu(LU_array, permute_l=False, overwrite_a=False, check_finite=True)
 
@@ -255,9 +272,10 @@ if __name__ == '__main__':
     # print "Upper triangle: \n" + str(U) +"\n"
 
     # bb = P*b
-    # print bb
+    # print "bb: \n" + str(np.asmatrix(bb))
+
     # y = np.linalg.lstsq(L,bb)
-    # print y
+    # print "y: \n" + str(np.asmatrix(y))
     # print "**************************************\n"
 
     # top_diagonal, main_diagonal, bottom_diagonal = getTridiagonal(LU_array)
@@ -290,17 +308,32 @@ if __name__ == '__main__':
     # c = np.linalg.cholesky(chol_matrix)
     # print c
 
-    print "\n**************************************\n"
+    # print "\n**************************************\n"
+    # print "Testing Hilbert: \n"
     # print condNumberNumpy(hilbert(10))
     # print LA.norm(hilbert(10), np.inf)
-    print "\n**************************************\n"
-    print "LaGrange Polynomial Interpolation: \n"
-    x = np.array(read_matrix)
-    print x
-    y = np.array(read_matrix)
-    poly = lagrange(x, y)
-    print poly
-    print "\n**************************************\n"
+    # print "\n**************************************\n"
+    # print "LaGrange Polynomial Interpolation: \n"
+    # x = np.array(read_matrix.flatten())
+    # print x
+    # y = np.array(read_matrix.flatten())
+    # poly = lagrange(x, y)
+    # print poly
+    # print "\n**************************************\n"
+    # LU = np.asarray([[1,2,3],[4,5,6],[7,8,9]])
+    # print condNumber(hilbert(7))
+
+    for i in range(1,10):
+        print "Hilbert = " + str(i) 
+        A = hilbert(i)
+        print "the hilbert matrix: \n"+str(A)+"\n"
+        b = sumOfRow(hilbert(i))
+        print "b: "
+        print b
+        x = np.linalg.lstsq(A,b)
+        print "AX = b: "
+        print x
+        print
 
 
 
